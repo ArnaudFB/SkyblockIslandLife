@@ -1,0 +1,4 @@
+name: PluginVie
+version: '${project.version}'
+main: fr.nono74210.pluginvie.PluginVie
+api-version: '1.20'
