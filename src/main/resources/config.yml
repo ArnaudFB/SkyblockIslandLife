@@ -1,0 +1,16 @@
+# Select desired language
+# available languages : en, fr
+lang: en
+
+# Database parameters
+database:
+  url: ""
+  user: ""
+  password: ""
+
+
+# Base amount for starting lives and maximum lives
+lives:
+  maxlives: 100
+  startingamount: 10
+
