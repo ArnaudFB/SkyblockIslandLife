@@ -8,10 +8,10 @@ import java.sql.SQLException;
 
 public final class PluginVie extends JavaPlugin {
 
-    private final PluginVie pluginVie;
+    private static PluginVie pluginVie;
     private Database database;
     private final SuperiorSkyblock superiorSkyblock;
-    public PluginVie getInstance(){ return pluginVie; }
+    public static PluginVie getInstance(){ return pluginVie; }
 
     public PluginVie(PluginVie pluginVie, SuperiorSkyblock superiorSkyblock) {
         this.pluginVie = pluginVie;

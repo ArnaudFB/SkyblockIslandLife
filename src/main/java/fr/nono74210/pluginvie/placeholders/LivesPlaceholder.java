@@ -47,12 +47,15 @@ public class LivesPlaceholder extends PlaceholderExpansion {
             try {
                 islanduuid = database.getIslandByPlayerUUID(playeruuid);
                 int livesleft = database.getLivesLeftByUUID(islanduuid);
-                // TODO : return livesleft
+                return String.valueOf(livesleft);
             } catch (SQLException e) {
-                return "An error occured while trying to get lives left";
+                return "";
             }
 
         }
-        return "Placeholder not defined";
+        if(params.equalsIgnoreCase("island_vie_max")) {
+            return String.valueOf(pluginVie.getConfig().getInt("lives.maxlives"));
+        }
+        return "";
     }
 }

@@ -1,16 +1,26 @@
-# Select desired language
-# available languages : en, fr
-lang: en
+# Prefix of PluginVie
+prefix: "PluginVie"
+
+# Message to be sent to the player
+Messages:
+  TooManyArgsError: ""
+  PlayerNotFoundError: ""
+  NotAnIntError: ""
+
+# Commands to be performed on player's death
+DeathCommands:
+  Command1: ""
+  Command2: ""
 
 # Database parameters
-database:
-  url: ""
-  user: ""
-  password: ""
+Database:
+  URL: ""
+  User: ""
+  Password: ""
 
 
 # Base amount for starting lives and maximum lives
-lives:
-  maxlives: 100
-  startingamount: 10
+Lives:
+  MaxLives: 100
+  StartingAmount: 10
 
