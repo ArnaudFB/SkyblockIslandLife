@@ -3,6 +3,8 @@ package fr.nono74210.pluginvie.listeners;
 import fr.nono74210.pluginvie.PluginVie;
 import fr.nono74210.pluginvie.database.Database;
 import fr.nono74210.pluginvie.placeholders.LivesPlaceholder;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,7 +20,7 @@ public class PlayerDeathListener implements Listener {
     private final Database database;
 
     public PlayerDeathListener(Database database) {
-        plugin = PluginVie.getInstance();
+        this.plugin = PluginVie.getInstance();
         this.database = database;
     }
 
@@ -30,7 +32,8 @@ public class PlayerDeathListener implements Listener {
 
         for(String line : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("DeathCommands")).getKeys(false)) {
 
-            //TODO: inclure la logique de commandes à la mort
+            String commandline = PlaceholderAPI.setPlaceholders(player, line);
+            Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), commandline);
 
         }
 
@@ -40,6 +43,7 @@ public class PlayerDeathListener implements Listener {
 
         if(livesleft == 0) {
 
+            player.sendMessage("Vous n'avez plus de vie sur votre île");
             //TODO: Inclure la logique du delete de l'ile (commande ?)
 
         }

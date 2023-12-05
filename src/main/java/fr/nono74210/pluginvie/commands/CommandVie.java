@@ -2,6 +2,7 @@ package fr.nono74210.pluginvie.commands;
 
 import fr.nono74210.pluginvie.PluginVie;
 import fr.nono74210.pluginvie.database.Database;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -60,11 +61,9 @@ public class CommandVie implements CommandExecutor {
 
         if(commandSender instanceof Player){
             Player player = (Player) commandSender;
-            if(args == null) {
-                //TODO: ajouter le parse de papi
-                player.sendMessage(plugin.getConfig().getString("DisplayLivesLeft", ""));
-            }
-
+            String message = plugin.getConfig().getString("DisplayLivesLeft", "Vous avez %island_vie_left% vie(s) restante(s)");
+            String parsedmessage = PlaceholderAPI.setPlaceholders(player, message);
+            player.sendMessage(parsedmessage);
         }
 
         return false;
