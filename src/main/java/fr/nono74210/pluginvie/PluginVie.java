@@ -14,17 +14,14 @@ import java.util.Objects;
 
 public final class PluginVie extends JavaPlugin {
 
-    private static PluginVie pluginVie;
+    private static PluginVie instance;
 
-    public static PluginVie getInstance(){ return pluginVie; }
-
-    public PluginVie(PluginVie pluginVie, SuperiorSkyblock superiorSkyblock) {
-        PluginVie.pluginVie = pluginVie;
-    }
+    public static PluginVie getInstance(){ return instance; }
 
     @Override
     public void onEnable() {
 
+        instance = this;
         Database database = new Database();
 
         try {

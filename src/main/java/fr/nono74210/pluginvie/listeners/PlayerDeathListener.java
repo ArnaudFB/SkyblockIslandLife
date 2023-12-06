@@ -20,7 +20,7 @@ public class PlayerDeathListener implements Listener {
     private final Database database;
 
     public PlayerDeathListener(Database database) {
-        this.plugin = PluginVie.getInstance();
+        plugin = PluginVie.getInstance();
         this.database = database;
     }
 

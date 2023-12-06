@@ -2,3 +2,16 @@ name: PluginVie
 version: '${project.version}'
 main: fr.nono74210.pluginvie.PluginVie
 api-version: '1.20'
+commands:
+  vie:
+    description: Commande de base du plugin
+    permission: vie.seen
+permissions:
+  vie.seen:
+    description: Permet de voir son nombre de vies restantes
+  vie.reload:
+    description: Permet de reload la config du plugin
+    default: op
+  vie.add:
+    description: Permet d'ajouter des vies à une ile
+    default: op

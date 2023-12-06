@@ -7,21 +7,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TabCompletion implements TabCompleter {
 
-    List<String> arguments = new ArrayList<>();
+
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if(arguments.isEmpty()){
-            arguments.add("reload");
-            arguments.add("add");
-        }
-
+        List<String> arguments = new ArrayList<>(Arrays.asList("reload", "add"));
         List<String> result = new ArrayList<>();
+        
         if(args.length == 1) {
             for (String a : arguments) {
                 if (a.toLowerCase().startsWith(args[0].toLowerCase())) {

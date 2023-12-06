@@ -14,8 +14,8 @@ public class LivesPlaceholder extends PlaceholderExpansion {
     private final PluginVie pluginVie;
     private final Database database;
 
-    public LivesPlaceholder(PluginVie pluginVie, Database database) {
-        this.pluginVie = pluginVie;
+    public LivesPlaceholder(Database database) {
+        pluginVie = PluginVie.getInstance();
         this.database = database;
     }
     @Override
