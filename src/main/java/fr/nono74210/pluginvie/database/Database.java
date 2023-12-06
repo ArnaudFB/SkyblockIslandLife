@@ -1,7 +1,6 @@
 package fr.nono74210.pluginvie.database;
 
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblock;
-import fr.nono74210.pluginvie.PluginVie;
 
 import java.sql.*;
 import java.util.UUID;
@@ -9,124 +8,90 @@ import java.util.UUID;
 public class Database {
 
     private Connection connection;
-    public PluginVie plugin;
 
     public SuperiorSkyblock superiorSkyblock;
-    String url = plugin.getConfig().getString("database.url");
-    String user = plugin.getConfig().getString("database.user");
-    String password = plugin.getConfig().getString("database.password");
+    String host;
+    String user;
+    String password;
+    String database;
 
     String skyblockDB = superiorSkyblock.getConfig().getString("database.db-name");
 
-    public Connection getConnection() throws SQLException {
+    public Database(String host, String user, String password, String database) {
+        this.host = host;
+        this.user = user;
+        this.password = password;
+        this.database = database;
+    }
 
-        if(connection != null) {
+    public Connection init() throws SQLException {
+        this.connection = DriverManager.getConnection(host, user, password);
+        return this.connection;
+    }
+
+    public Connection getConnection() throws SQLException {
+        if (connection != null && !connection.isClosed()) {
             return connection;
         }
 
-        this.connection = DriverManager.getConnection(url, user, password);
-        System.out.println("Connected successfully to PluginVie database !");
-        return this.connection;
-
+        return init();
     }
 
-    public void initializeDataBase() throws SQLException {
+    public void load() throws SQLException {
+        PreparedStatement ps = getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS islandLives (" +
+                "id         INTEGER     PRIMARY KEY AUTO_INCREMENT, " +
+                "islandUuid     VARCHAR(36), " +
+                "livesleft  NUMERIC)");
 
-        Statement statement = getConnection().createStatement();
-        String initializeDatabase = "CREATE DATABASE pluginvie IF NOT EXISTS;";
-        String useDatabase = "USE pluginvie;";
-        String initializeTable = "CREATE TABLE IF NOT EXISTS islandlives (\n" +
-                "    island CHAR(36),\n" +
-                "    livesleft NUMERIC\n" +
-                "    FOREIGN KEY (islands) REFERENCES " + skyblockDB + ".islands (uuid)" +
-                ");";
-
-        statement.execute(initializeDatabase);
-        statement.execute(useDatabase);
-        statement.execute(initializeTable);
-
+        ps.execute();
     }
 
-    public UUID getIslandByPlayerUUID(UUID playeruuid) throws SQLException {
+    public int getLivesLeftByUUID(UUID islandUuid) throws SQLException {
+        PreparedStatement ps = getConnection().prepareStatement("SELECT livesleft FROM islandlives " +
+                "WHERE islandUuid = ?");
+        ps.setString(1, islandUuid.toString());
 
-        String uuid = playeruuid.toString();
+        ResultSet resultSet = ps.executeQuery();
 
-        PreparedStatement preparedStatement = getConnection().
-                prepareStatement("USE " + skyblockDB + "; \n" +
-                        "SELECT islands FROM islands_members \n" +
-                        "WHERE player =  ?;");
+        int livesLeft = -1;
 
-        preparedStatement.setString(1, uuid);
+        if (resultSet.next()) {
+            livesLeft = resultSet.getInt("livesleft");
+        }
 
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        return UUID.fromString(resultSet.getString("islands"));
-
+        //todo: Quid si -1 ?
+        return livesLeft;
     }
 
-    public int getLivesLeftByUUID(UUID islanduuid) throws SQLException {
+    public int decrementLivesByIslandUuid(UUID islandUuid, int newAmount) throws SQLException {
+        PreparedStatement preparedStatement = getConnection().prepareStatement("UPDATE islandlives " +
+                "SET livesleft = ?" +
+                "WHERE island = ?");
 
-        String uuid = islanduuid.toString();
-
-        PreparedStatement preparedStatement = getConnection().
-                prepareStatement("USE pluginvie ; \n" +
-                        "SELECT livesleft FROM islandlives \n" +
-                        "WHERE island = ?;");
-
-        preparedStatement.setString(1, uuid);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        return resultSet.getInt("livesleft");
-
-    }
-
-    public void decrementLivesByUUID(UUID playeruuid, int amount) throws SQLException {
-
-        UUID islanduuid = getIslandByPlayerUUID(playeruuid);
-        int livesleft = getLivesLeftByUUID(islanduuid);
-
-        PreparedStatement preparedStatement = getConnection().
-                prepareStatement("USE pluginvie ; \n" +
-                        "UPDATE islandlives \n" +
-                        "SET livesleft = ? \n" +
-                        "WHERE island = ? ;");
-
-        preparedStatement.setInt(1, livesleft-amount);
-        preparedStatement.setObject(2, islanduuid);
+        preparedStatement.setInt(1, newAmount);
+        preparedStatement.setString(2, islandUuid.toString());
 
         preparedStatement.executeUpdate();
-        preparedStatement.getConnection().commit();
 
+        //todo return vie qui reste
     }
 
-    public void addIslandToDatabase(UUID islanduuid) throws SQLException {
+    public void addIslandToDatabase(UUID islanduuid, int defaultAmount) throws SQLException {
+        PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO islandlives " +
+                "VALUES (?, ?)");
 
-        PreparedStatement preparedStatement = getConnection().
-                prepareStatement("USE pluginvie ; \n" +
-                        "INSERT INTO islandlives \n" +
-                        "VALUES (?, ?);");
-
-        preparedStatement.setObject(1, islanduuid);
-        preparedStatement.setInt(2, plugin.getConfig().getInt("Lives.StartingAmount"));
+        preparedStatement.setString(1, islanduuid.toString());
+        preparedStatement.setInt(2, defaultAmount);
 
         preparedStatement.executeUpdate();
-        preparedStatement.getConnection().commit();
-
     }
 
     public void deleteIslandFromDatabase(UUID islanduuid) throws SQLException {
+        PreparedStatement preparedStatement = getConnection().prepareStatement("DELETE FROM islandlives " +
+                "WHERE island = ?");
 
-        PreparedStatement preparedStatement = getConnection().
-                prepareStatement("USE pluginvie ; \n" +
-                        "DELETE FROM islandlives \n" +
-                        "WHERE island = ?;");
-
-        preparedStatement.setObject(1, islanduuid);
+        preparedStatement.setString(1, islanduuid.toString());
 
         preparedStatement.executeUpdate();
-        preparedStatement.getConnection().commit();
-
     }
-
 }

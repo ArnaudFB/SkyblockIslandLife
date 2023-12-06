@@ -1,7 +1,7 @@
 package fr.nono74210.pluginvie.commands;
 
 import fr.nono74210.pluginvie.PluginVie;
-import fr.nono74210.pluginvie.database.Database;
+import fr.nono74210.pluginvie.database.DatabaseManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -10,20 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.SQLException;
 import java.util.UUID;
 
 public class CommandVie implements CommandExecutor {
 
-    private final PluginVie plugin;
-
-    private Database database;
-
-    public CommandVie(PluginVie plugin) {
-        this.plugin = plugin;
-    }
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, String label, String[] args) {
+        PluginVie plugin = PluginVie.getInstance();
 
         if(!command.getName().equalsIgnoreCase("vie")) {
             return false;
@@ -40,7 +33,9 @@ public class CommandVie implements CommandExecutor {
                 return false;
             }
             Player target = Bukkit.getPlayerExact(args[1]);
-            Integer amount = Integer.getInteger(args[2]);
+
+            //todo: check NumberFormatException
+            Integer amount = Integer.parseInt(args[2]);
             if(target == null) {
                 commandSender.sendMessage(plugin.getConfig().getString("PlayerNotFoundError", "Player not found"));
                 return false;
@@ -49,17 +44,14 @@ public class CommandVie implements CommandExecutor {
                 commandSender.sendMessage(plugin.getConfig().getString("NotAnIntError", "You must specify an integer"));
                 return false;
             }
-            UUID targetuuid = target.getUniqueId();
-            try {
-                database.decrementLivesByUUID(targetuuid, amount);
-                return true;
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
 
+            UUID islandUuid = plugin.getSuperiorsSkyBlockHook().getIslandByPlayerUUID(target.getUniqueId());
+            DatabaseManager.addLivesByIslandUuid(islandUuid, amount);
         }
 
-        if(commandSender instanceof Player){
+        //todo: appel à la base pour calculer le nombre de vie restant
+
+        if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
             String message = plugin.getConfig().getString("DisplayLivesLeft", "Vous avez %island_vie_left% vie(s) restante(s)");
             String parsedmessage = PlaceholderAPI.setPlaceholders(player, message);

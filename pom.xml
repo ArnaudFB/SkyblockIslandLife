@@ -6,7 +6,7 @@
 
     <groupId>fr.nono74210</groupId>
     <artifactId>PluginVie</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>PluginVie</name>
