@@ -1,16 +1,13 @@
-# Prefix of PluginVie
-prefix: "PluginVie"
-
-# Message to be sent to the player
-Messages:
-  TooManyArgsError: ""
-  PlayerNotFoundError: ""
-  NotAnIntError: ""
-
 # Commands to be performed on player's death
-DeathCommands:
+CommandsOnDeath:
   Command1: ""
   Command2: ""
+
+# Base amount for starting lives and maximum lives
+Lives:
+  MaxLives: 100
+  StartingAmount: 10
+  Penalty: 1
 
 # Database parameters
 Database:
@@ -18,10 +15,4 @@ Database:
   URL: ""
   User: ""
   Password: ""
-
-
-# Base amount for starting lives and maximum lives
-Lives:
-  MaxLives: 100
-  StartingAmount: 10
 

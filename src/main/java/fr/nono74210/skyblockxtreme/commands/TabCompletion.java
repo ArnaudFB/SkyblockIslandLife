@@ -1,4 +1,4 @@
-package fr.nono74210.pluginvie.commands;
+package fr.nono74210.skyblockxtreme.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

@@ -1,12 +1,12 @@
-package fr.nono74210.pluginvie;
+package fr.nono74210.skyblockxtreme;
 
-import fr.nono74210.pluginvie.commands.CommandVie;
-import fr.nono74210.pluginvie.database.DatabaseManager;
-import fr.nono74210.pluginvie.hooks.PlaceholderHook;
-import fr.nono74210.pluginvie.hooks.SuperiorsSkyBlockHook;
-import fr.nono74210.pluginvie.listeners.IslandCreatedListener;
-import fr.nono74210.pluginvie.listeners.IslandDeletedListener;
-import fr.nono74210.pluginvie.listeners.PlayerDeathListener;
+import fr.nono74210.skyblockxtreme.commands.CommandVie;
+import fr.nono74210.skyblockxtreme.database.DatabaseManager;
+import fr.nono74210.skyblockxtreme.hooks.PlaceholderHook;
+import fr.nono74210.skyblockxtreme.hooks.SuperiorsSkyBlockHook;
+import fr.nono74210.skyblockxtreme.listeners.IslandCreatedListener;
+import fr.nono74210.skyblockxtreme.listeners.IslandDeletedListener;
+import fr.nono74210.skyblockxtreme.listeners.PlayerDeathListener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,9 +18,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
-public final class PluginVie extends JavaPlugin {
+public final class SkyblockXtreme extends JavaPlugin {
 
-    private static PluginVie instance;
+    private static SkyblockXtreme instance;
     public static ConsoleCommandSender log;
 
     private FileConfiguration languageConfig;
@@ -76,7 +76,7 @@ public final class PluginVie extends JavaPlugin {
         DatabaseManager.close();
     }
 
-    public static PluginVie getInstance() {
+    public static SkyblockXtreme getInstance() {
         return instance;
     }
 

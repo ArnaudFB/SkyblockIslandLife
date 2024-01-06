@@ -1,7 +1,7 @@
-package fr.nono74210.pluginvie.listeners;
+package fr.nono74210.skyblockxtreme.listeners;
 
 import com.bgsoftware.superiorskyblock.api.events.IslandDisbandEvent;
-import fr.nono74210.pluginvie.database.DatabaseManager;
+import fr.nono74210.skyblockxtreme.database.DatabaseManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 

@@ -1,4 +1,4 @@
-package fr.nono74210.pluginvie.utils.results;
+package fr.nono74210.skyblockxtreme.utils;
 
 public class Result extends ResultBase {
 

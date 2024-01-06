@@ -1,4 +1,4 @@
-package fr.nono74210.pluginvie.database;
+package fr.nono74210.skyblockxtreme.database;
 
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblock;
 
@@ -46,6 +46,10 @@ public class Database {
         ps.execute();
     }
 
+    public void close() throws SQLException {
+        this.connection.close();
+    }
+
     public int getLivesLeftByUUID(UUID islandUuid) throws SQLException {
         PreparedStatement ps = getConnection().prepareStatement("SELECT livesleft FROM islandlives " +
                 "WHERE islandUuid = ?");
@@ -59,11 +63,10 @@ public class Database {
             livesLeft = resultSet.getInt("livesleft");
         }
 
-        //todo: Quid si -1 ?
         return livesLeft;
     }
 
-    public int decrementLivesByIslandUuid(UUID islandUuid, int newAmount) throws SQLException {
+    public int setNewLivesAmountByIslandUuid(UUID islandUuid, int newAmount) throws SQLException {
         PreparedStatement preparedStatement = getConnection().prepareStatement("UPDATE islandlives " +
                 "SET livesleft = ?" +
                 "WHERE island = ?");
@@ -73,7 +76,8 @@ public class Database {
 
         preparedStatement.executeUpdate();
 
-        //todo return vie qui reste
+        return newAmount;
+
     }
 
     public void addIslandToDatabase(UUID islanduuid, int defaultAmount) throws SQLException {

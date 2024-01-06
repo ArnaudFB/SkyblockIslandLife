@@ -1,6 +1,6 @@
-name: PluginVie
+name: SkblockXtreme
 version: '${project.version}'
-main: fr.nono74210.pluginvie.PluginVie
+main: fr.nono74210.skyblockxtreme.SkyblockXtreme
 api-version: '1.20'
 depend:
   - "PlaceholderAPI"
