@@ -1,6 +1,6 @@
-name: SkblockXtreme
+name: SkblockIslandLife
 version: '${project.version}'
-main: fr.nono74210.skyblockxtreme.SkyblockXtreme
+main: fr.nono74210.skyblockislandlife.SkyblockIslandLife
 api-version: '1.20'
 depend:
   - "PlaceholderAPI"

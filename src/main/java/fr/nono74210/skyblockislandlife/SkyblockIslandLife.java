@@ -1,12 +1,13 @@
-package fr.nono74210.skyblockxtreme;
+package fr.nono74210.skyblockislandlife;
 
-import fr.nono74210.skyblockxtreme.commands.CommandVie;
-import fr.nono74210.skyblockxtreme.database.DatabaseManager;
-import fr.nono74210.skyblockxtreme.hooks.PlaceholderHook;
-import fr.nono74210.skyblockxtreme.hooks.SuperiorsSkyBlockHook;
-import fr.nono74210.skyblockxtreme.listeners.IslandCreatedListener;
-import fr.nono74210.skyblockxtreme.listeners.IslandDeletedListener;
-import fr.nono74210.skyblockxtreme.listeners.PlayerDeathListener;
+import fr.nono74210.skyblockislandlife.commands.CommandVie;
+import fr.nono74210.skyblockislandlife.commands.TabCompletion;
+import fr.nono74210.skyblockislandlife.database.DatabaseManager;
+import fr.nono74210.skyblockislandlife.hooks.PlaceholderHook;
+import fr.nono74210.skyblockislandlife.hooks.SuperiorsSkyBlockHook;
+import fr.nono74210.skyblockislandlife.listeners.IslandCreatedListener;
+import fr.nono74210.skyblockislandlife.listeners.IslandDeletedListener;
+import fr.nono74210.skyblockislandlife.listeners.PlayerDeathListener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,9 +19,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
-public final class SkyblockXtreme extends JavaPlugin {
+public final class SkyblockIslandLife extends JavaPlugin {
 
-    private static SkyblockXtreme instance;
+    private static SkyblockIslandLife instance;
     public static ConsoleCommandSender log;
 
     private FileConfiguration languageConfig;
@@ -36,12 +37,16 @@ public final class SkyblockXtreme extends JavaPlugin {
         loadLanguage();
 
         DatabaseManager.init();
+        DatabaseManager.load();
 
         getServer().getPluginManager().registerEvents(new IslandCreatedListener(), this);
         getServer().getPluginManager().registerEvents(new IslandDeletedListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
 
-        if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+        this.getCommand("vie").setExecutor(new CommandVie());
+        this.getCommand("vie").setTabCompleter(new TabCompletion());
+
+        if (Bukkit.getPluginManager().isPluginEnabled("SuperiorSkyblock2")) {
             superiorsSkyBlockHook = new SuperiorsSkyBlockHook();
         }
 
@@ -49,7 +54,6 @@ public final class SkyblockXtreme extends JavaPlugin {
             new PlaceholderHook().register();
         }
 
-        getCommand("vie").setExecutor(new CommandVie());
     }
 
     private void loadLanguage() {
@@ -76,7 +80,7 @@ public final class SkyblockXtreme extends JavaPlugin {
         DatabaseManager.close();
     }
 
-    public static SkyblockXtreme getInstance() {
+    public static SkyblockIslandLife getInstance() {
         return instance;
     }
 

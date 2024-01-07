@@ -1,5 +1,7 @@
+
+
 ErrorMessages:
-  NoPermission: "%prefix% &cVous n'avez pas la permission d'effectuer cette commande"
-  TooManyArgsError: "%prefix% &cTrop d'arguments pour la commande"
-  PlayerNotFoundError: "%prefix% &cLe joueur spécifié n'a pas été trouvé"
-  NotAnIntError: "%prefix% &cVeuillez entrer un entier"
+  NoPermission: "&cVous n'avez pas la permission d'effectuer cette commande"
+  TooManyArgsError: "&cTrop d'arguments pour la commande"
+  PlayerNotFoundError: "&cLe joueur spécifié n'a pas été trouvé"
+  NotAnIntError: "&cVeuillez entrer un entier"

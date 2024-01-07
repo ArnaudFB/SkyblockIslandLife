@@ -1,8 +1,8 @@
-package fr.nono74210.skyblockxtreme.listeners;
+package fr.nono74210.skyblockislandlife.listeners;
 
-import fr.nono74210.skyblockxtreme.SkyblockXtreme;
-import fr.nono74210.skyblockxtreme.database.DatabaseManager;
-import fr.nono74210.skyblockxtreme.utils.ResultT;
+import fr.nono74210.skyblockislandlife.SkyblockIslandLife;
+import fr.nono74210.skyblockislandlife.database.DatabaseManager;
+import fr.nono74210.skyblockislandlife.utils.ResultT;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,7 +17,7 @@ public class PlayerDeathListener implements Listener {
 
     @EventHandler
     public void OnPlayerDeath(PlayerDeathEvent event) {
-        SkyblockXtreme plugin = SkyblockXtreme.getInstance();
+        SkyblockIslandLife plugin = SkyblockIslandLife.getInstance();
         Player player = event.getEntity();
         UUID playerUuid = player.getUniqueId();
 
@@ -28,17 +28,18 @@ public class PlayerDeathListener implements Listener {
             }
         }
 
-        UUID islanduuid = plugin.getSuperiorsSkyBlockHook().getIslandByPlayerUUID(playerUuid);
-        ResultT<Integer> resLivesleft = DatabaseManager.decrementLivesByIslandUuid(islanduuid);
+        ResultT<UUID> islanduuid = plugin.getSuperiorsSkyBlockHook().getIslandByPlayerUUID(playerUuid);
+        ResultT<Integer> resLivesleft = DatabaseManager.decrementLivesByIslandUuid(islanduuid.getResult());
         if (resLivesleft.inError()) {
-            SkyblockXtreme.log.sendMessage(resLivesleft.getErrorMessage());
+            SkyblockIslandLife.log.sendMessage(resLivesleft.getErrorMessage());
         }
 
 
-        if (resLivesleft.getResult() == 0) {
+        if (resLivesleft.getResult() <= 0) {
 
             player.sendMessage("Vous n'avez plus de vie sur votre île");
             //TODO: Inclure la logique du delete de l'ile (paste schématic via commande admin)
+            DatabaseManager.setLivesByIslandUuid(islanduuid.getResult());
 
         }
 

@@ -1,7 +1,8 @@
-package fr.nono74210.skyblockxtreme.hooks;
+package fr.nono74210.skyblockislandlife.hooks;
 
-import fr.nono74210.skyblockxtreme.SkyblockXtreme;
-import fr.nono74210.skyblockxtreme.database.DatabaseManager;
+import fr.nono74210.skyblockislandlife.SkyblockIslandLife;
+import fr.nono74210.skyblockislandlife.database.DatabaseManager;
+import fr.nono74210.skyblockislandlife.utils.ResultT;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -47,11 +48,11 @@ public class PlaceholderHook extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, String params) {
-        SkyblockXtreme skyblockXtreme = SkyblockXtreme.getInstance();
+        SkyblockIslandLife skyblockXtreme = SkyblockIslandLife.getInstance();
 
         if (params.equalsIgnoreCase("islandVieLeft")) {
-            UUID islanduuid = skyblockXtreme.getSuperiorsSkyBlockHook().getIslandByPlayerUUID(player.getUniqueId());
-            return String.valueOf(DatabaseManager.getLivesByIslandUuid(islanduuid));
+            ResultT<UUID> islanduuid = skyblockXtreme.getSuperiorsSkyBlockHook().getIslandByPlayerUUID(player.getUniqueId());
+            return String.valueOf(DatabaseManager.getLivesByIslandUuid(islanduuid.getResult()));
         }
 
         if (params.equalsIgnoreCase("islandVieMax")) {

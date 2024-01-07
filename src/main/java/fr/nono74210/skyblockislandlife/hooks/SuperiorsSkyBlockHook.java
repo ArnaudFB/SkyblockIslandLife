@@ -1,7 +1,7 @@
-package fr.nono74210.skyblockxtreme.hooks;
+package fr.nono74210.skyblockislandlife.hooks;
 
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
-import fr.nono74210.skyblockxtreme.utils.ResultT;
+import fr.nono74210.skyblockislandlife.utils.ResultT;
 
 import java.util.UUID;
 

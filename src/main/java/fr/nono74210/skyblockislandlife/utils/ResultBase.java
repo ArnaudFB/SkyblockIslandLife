@@ -1,4 +1,4 @@
-package fr.nono74210.skyblockxtreme.utils;
+package fr.nono74210.skyblockislandlife.utils;
 
 public abstract class ResultBase {
     protected boolean success;

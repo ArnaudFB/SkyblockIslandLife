@@ -1,4 +1,4 @@
-package fr.nono74210.skyblockxtreme.commands;
+package fr.nono74210.skyblockislandlife.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

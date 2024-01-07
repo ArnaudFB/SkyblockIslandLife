@@ -10,9 +10,10 @@ Lives:
   Penalty: 1
 
 # Database parameters
-Database:
-  Database: ""
-  URL: ""
-  User: ""
-  Password: ""
+database:
+  database: "SkyblockIslandLife"
+  url: "localhost"
+  port: 3306
+  user: "root"
+  password: ""
 

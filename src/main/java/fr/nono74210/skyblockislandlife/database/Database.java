@@ -1,6 +1,4 @@
-package fr.nono74210.skyblockxtreme.database;
-
-import com.bgsoftware.superiorskyblock.api.SuperiorSkyblock;
+package fr.nono74210.skyblockislandlife.database;
 
 import java.sql.*;
 import java.util.UUID;
@@ -9,23 +7,22 @@ public class Database {
 
     private Connection connection;
 
-    public SuperiorSkyblock superiorSkyblock;
     String host;
+    int port;
     String user;
     String password;
     String database;
 
-    String skyblockDB = superiorSkyblock.getConfig().getString("database.db-name");
-
-    public Database(String host, String user, String password, String database) {
+    public Database(String host, Integer port, String user, String password, String database) {
         this.host = host;
+        this.port = port;
         this.user = user;
         this.password = password;
         this.database = database;
     }
 
     public Connection init() throws SQLException {
-        this.connection = DriverManager.getConnection(host, user, password);
+        this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database  , user, password);
         return this.connection;
     }
 
@@ -68,8 +65,8 @@ public class Database {
 
     public int setNewLivesAmountByIslandUuid(UUID islandUuid, int newAmount) throws SQLException {
         PreparedStatement preparedStatement = getConnection().prepareStatement("UPDATE islandlives " +
-                "SET livesleft = ?" +
-                "WHERE island = ?");
+                "SET livesleft = ? " +
+                "WHERE islandUuid = ? ");
 
         preparedStatement.setInt(1, newAmount);
         preparedStatement.setString(2, islandUuid.toString());
@@ -81,7 +78,7 @@ public class Database {
     }
 
     public void addIslandToDatabase(UUID islanduuid, int defaultAmount) throws SQLException {
-        PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO islandlives " +
+        PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO islandlives (islandUuid, livesleft) " +
                 "VALUES (?, ?)");
 
         preparedStatement.setString(1, islanduuid.toString());
@@ -92,7 +89,7 @@ public class Database {
 
     public void deleteIslandFromDatabase(UUID islanduuid) throws SQLException {
         PreparedStatement preparedStatement = getConnection().prepareStatement("DELETE FROM islandlives " +
-                "WHERE island = ?");
+                "WHERE islandUuid = ?");
 
         preparedStatement.setString(1, islanduuid.toString());
 

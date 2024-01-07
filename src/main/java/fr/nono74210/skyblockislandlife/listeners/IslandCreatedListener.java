@@ -1,7 +1,7 @@
-package fr.nono74210.skyblockxtreme.listeners;
+package fr.nono74210.skyblockislandlife.listeners;
 
 import com.bgsoftware.superiorskyblock.api.events.IslandCreateEvent;
-import fr.nono74210.skyblockxtreme.database.DatabaseManager;
+import fr.nono74210.skyblockislandlife.database.DatabaseManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
