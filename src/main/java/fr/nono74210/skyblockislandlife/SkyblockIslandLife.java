@@ -51,13 +51,13 @@ public final class SkyblockIslandLife extends JavaPlugin {
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceholderHook().register();
+            new PlaceholderHook(this).register();
         }
 
     }
 
     private void loadLanguage() {
-        String pathPluginLangFile = "lang/fr_messages.yml";
+        String pathPluginLangFile = "fr_messages.yml";
         Reader defConfigStream;
 
         try {

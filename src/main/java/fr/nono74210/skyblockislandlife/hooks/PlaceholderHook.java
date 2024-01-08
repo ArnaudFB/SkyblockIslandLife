@@ -12,9 +12,15 @@ import java.util.UUID;
 
 public class PlaceholderHook extends PlaceholderExpansion {
 
+    private final SkyblockIslandLife plugin;
+
+    public PlaceholderHook(SkyblockIslandLife plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean canRegister() {
-        return Bukkit.getPluginManager().getPlugin("PluginVie") != null;
+        return Bukkit.getPluginManager().getPlugin("SkyblockIslandLife") != null;
     }
 
     @Override
@@ -33,7 +39,7 @@ public class PlaceholderHook extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getIdentifier() {
-        return "islandVie";
+        return "islandlife";
     }
 
     @Override
@@ -50,13 +56,13 @@ public class PlaceholderHook extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, String params) {
         SkyblockIslandLife skyblockXtreme = SkyblockIslandLife.getInstance();
 
-        if (params.equalsIgnoreCase("islandVieLeft")) {
+        if (params.equalsIgnoreCase("left")) {
             ResultT<UUID> islanduuid = skyblockXtreme.getSuperiorsSkyBlockHook().getIslandByPlayerUUID(player.getUniqueId());
-            return String.valueOf(DatabaseManager.getLivesByIslandUuid(islanduuid.getResult()));
+            return String.valueOf(DatabaseManager.getLivesByIslandUuid(islanduuid.getResult()).getResult());
         }
 
-        if (params.equalsIgnoreCase("islandVieMax")) {
-            return String.valueOf(skyblockXtreme.getConfig().getInt("lives.maxlives"));
+        if (params.equalsIgnoreCase("max")) {
+            return String.valueOf(skyblockXtreme.getConfig().getInt("Lives.MaxLives"));
         }
 
         return "";

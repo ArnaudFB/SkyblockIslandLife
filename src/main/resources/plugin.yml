@@ -1,4 +1,4 @@
-name: SkblockIslandLife
+name: SkyblockIslandLife
 version: '${project.version}'
 main: fr.nono74210.skyblockislandlife.SkyblockIslandLife
 api-version: '1.20'

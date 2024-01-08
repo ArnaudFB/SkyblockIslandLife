@@ -21,33 +21,46 @@ public class CommandVie implements CommandExecutor {
         SkyblockIslandLife plugin = SkyblockIslandLife.getInstance();
         FileConfiguration languageConfig = SkyblockIslandLife.getInstance().getLanguageConfig();
 
-        if(!command.getName().equalsIgnoreCase("vie")) {
+        if (!command.getName().equalsIgnoreCase("vie")) {
             return false;
         }
 
         if (args.length == 0 && commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            String message = languageConfig.getString("DisplayLivesLeft", "You have  %islandVieLeft% lives left");
+            String message = languageConfig.getString("MiscMessages.DisplayLivesLeft", "§aYou have  %islandVieLeft% lives left");
             String parsedMessage = PlaceholderAPI.setPlaceholders(player, message);
             player.sendMessage(parsedMessage);
             return true;
         }
 
-        if(args[0].equalsIgnoreCase("reload") && commandSender.hasPermission("vie.reload")) {
+        if (args[0].equalsIgnoreCase("reload")) {
+            if (!commandSender.hasPermission("vie.reload")){
+                commandSender.sendMessage(languageConfig.getString("ErrorMessages.NoPermission", "§cYou don't have permissions to do that !"));
+                return false;
+            }
             plugin.reloadConfig();
-            commandSender.sendMessage(languageConfig.getString("ReloadComplete"), "Reload complete");
+            commandSender.sendMessage(languageConfig.getString("MiscMessages.ReloadComplete", "§aReload complete"));
             return true;
         }
 
-        if(args[0].equalsIgnoreCase("add") && commandSender.hasPermission("vie.add")) {
-            if(args.length > 3) {
-                commandSender.sendMessage(languageConfig.getString("TooManyArgsError", "Too many args"));
+        if (args[0].equalsIgnoreCase("add")) {
+            if (!commandSender.hasPermission("vie.add")) {
+                commandSender.sendMessage(languageConfig.getString("ErrorMessages.NoPermission", "§cYou don't have permissions to do that !"));
+                return false;
+            }
+            if (args.length > 3) {
+                commandSender.sendMessage(languageConfig.getString("ErrorMessages.TooManyArgsError", "§cToo many args"));
+                return false;
+            }
+
+            if (args.length < 3) {
+                commandSender.sendMessage(languageConfig.getString("ErrorMesssages.NotEnoughArgsError", "§cNot enough args ! Usage is /vie add <player> <amount>"));
                 return false;
             }
 
             Player target = Bukkit.getPlayerExact(args[1]);
-            if(target == null) {
-                commandSender.sendMessage(languageConfig.getString("PlayerNotFoundError", "Player not found"));
+            if (target == null) {
+                commandSender.sendMessage(languageConfig.getString("ErrorMessages.PlayerNotFoundError", "§cPlayer not found"));
                 return false;
             }
 
@@ -59,7 +72,7 @@ public class CommandVie implements CommandExecutor {
                     return true;
                 }
             } catch (NumberFormatException e) {
-                commandSender.sendMessage(languageConfig.getString("NotAnIntError", "You must specify an integer"));
+                commandSender.sendMessage(languageConfig.getString("ErrorMessages.NotAnIntError", "§cYou must specify an integer"));
                 return false;
             }
 

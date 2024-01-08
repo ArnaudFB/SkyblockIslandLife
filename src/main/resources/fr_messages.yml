@@ -1,0 +1,10 @@
+MiscMessages:
+  DisplayLivesLeft: "Vous avez %islandVieLeft%"
+  ReloadComplete: "Reload fini"
+
+ErrorMessages:
+  NoPermission: "§cVous n'avez pas la permission d'effectuer cette commande"
+  TooManyArgsError: "§cTrop d'arguments pour la commande"
+  NotEnoughArgsError: "§cPas assez d'arguments pour la commande"
+  PlayerNotFoundError: "§cLe joueur spécifié n'a pas été trouvé"
+  NotAnIntError: "§cVeuillez entrer un entier"
