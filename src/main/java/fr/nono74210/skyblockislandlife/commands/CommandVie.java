@@ -27,7 +27,7 @@ public class CommandVie implements CommandExecutor {
 
         if (args.length == 0 && commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            String message = languageConfig.getString("MiscMessages.DisplayLivesLeft", "§aYou have  %islandVieLeft% lives left");
+            String message = languageConfig.getString("MiscMessages.DisplayLivesLeft", "§aYou have  %islandlife_left% lives left");
             String parsedMessage = PlaceholderAPI.setPlaceholders(player, message);
             player.sendMessage(parsedMessage);
             return true;
@@ -54,7 +54,7 @@ public class CommandVie implements CommandExecutor {
             }
 
             if (args.length < 3) {
-                commandSender.sendMessage(languageConfig.getString("ErrorMesssages.NotEnoughArgsError", "§cNot enough args ! Usage is /vie add <player> <amount>"));
+                commandSender.sendMessage(languageConfig.getString("ErrorMessages.NotEnoughArgsError", "§cNot enough args ! Usage is /vie add <player> <amount>"));
                 return false;
             }
 

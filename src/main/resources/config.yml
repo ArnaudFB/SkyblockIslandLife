@@ -3,6 +3,11 @@ CommandsOnDeath:
   Command1: ""
   Command2: ""
 
+#Commands to be performed when the player has no more lives left
+CommandsNoMoreLives:
+  Command1: ""
+  Command2: ""
+
 # Base amount for starting lives and maximum lives
 Lives:
   MaxLives: 100

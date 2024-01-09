@@ -25,7 +25,7 @@ public class PlayerDeathListener implements Listener {
         if (configDeathCommands != null) {
             for (String line : configDeathCommands.getKeys(false)) {
                 Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
-            }
+                }
         }
 
         ResultT<UUID> islanduuid = plugin.getSuperiorsSkyBlockHook().getIslandByPlayerUUID(playerUuid);
@@ -37,8 +37,12 @@ public class PlayerDeathListener implements Listener {
 
         if (resLivesleft.getResult() <= 0) {
 
-            player.sendMessage("Vous n'avez plus de vie sur votre île");
-            //TODO: Inclure la logique du delete de l'ile (paste schématic via commande admin)
+            ConfigurationSection configCommandsNoMoreLives = plugin.getConfig().getConfigurationSection("CommandsNoMoreLives");
+            if (configCommandsNoMoreLives != null) {
+                for (String line : configCommandsNoMoreLives.getKeys(false)) {
+                    Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
+                    }
+            }
             DatabaseManager.setLivesByIslandUuid(islanduuid.getResult());
 
         }
