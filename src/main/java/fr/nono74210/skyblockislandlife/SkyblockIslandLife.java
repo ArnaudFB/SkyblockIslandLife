@@ -8,15 +8,13 @@ import fr.nono74210.skyblockislandlife.hooks.SuperiorsSkyBlockHook;
 import fr.nono74210.skyblockislandlife.listeners.IslandCreatedListener;
 import fr.nono74210.skyblockislandlife.listeners.IslandDeletedListener;
 import fr.nono74210.skyblockislandlife.listeners.PlayerDeathListener;
+import fr.nono74210.skyblockislandlife.utils.language.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public final class SkyblockIslandLife extends JavaPlugin {
@@ -24,8 +22,8 @@ public final class SkyblockIslandLife extends JavaPlugin {
     private static SkyblockIslandLife instance;
     public static ConsoleCommandSender log;
 
-    private FileConfiguration languageConfig;
-
+    public static YamlConfiguration LANG;
+    public static File LANG_FILE;
     private SuperiorsSkyBlockHook superiorsSkyBlockHook;
 
     @Override
@@ -34,7 +32,7 @@ public final class SkyblockIslandLife extends JavaPlugin {
         log = Bukkit.getConsoleSender();
 
         saveDefaultConfig();
-        loadLanguage();
+        loadLang();
 
         DatabaseManager.init();
         DatabaseManager.load();
@@ -56,23 +54,41 @@ public final class SkyblockIslandLife extends JavaPlugin {
 
     }
 
-    private void loadLanguage() {
-        String pathPluginLangFile = "fr_messages.yml";
+    public void loadLang() {
+        File lang = new File(getDataFolder(), "lang.yml");
         Reader defConfigStream;
-
-        try {
-            defConfigStream = new InputStreamReader(getResource(pathPluginLangFile), StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            log.sendMessage("§cCritical error loading message file from the plugin, please provide a correct path to load default messages.");
-            this.setEnabled(false);
-            return;
+        if (!lang.exists()) {
+            try {
+                getDataFolder().mkdir();
+                lang.createNewFile();
+                defConfigStream = new InputStreamReader(getResource("lang.yml"), StandardCharsets.UTF_8);
+                if (defConfigStream != null) {
+                    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+                    defConfig.save(lang);
+                    Lang.setFile(defConfig);
+                }
+            } catch(IOException e) {
+                e.printStackTrace();
+                log.sendMessage("[SkyIslandLife] Couldn't create language file.");
+                log.sendMessage("[SkyIslandLife] This is a fatal error. Now disabling");
+                this.setEnabled(false);
+            }
         }
-        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+        YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
+        for(Lang item:Lang.values()) {
+            if (conf.getString(item.getPath()) == null) {
+                conf.set(item.getPath(), item.getDefault());
+            }
+        }
+        Lang.setFile(conf);
+        SkyblockIslandLife.LANG = conf;
+        SkyblockIslandLife.LANG_FILE = lang;
+        try {
+            conf.save(getLangFile());
+        } catch(IOException e) {
+            log.sendMessage("SkyIslandLife: &cCritical error : Failed to save lang.yml." + e.getMessage());
 
-        File languageConfFile = new File(getDataFolder(), pathPluginLangFile);
-        languageConfig = YamlConfiguration.loadConfiguration(languageConfFile);
-
-        languageConfig.setDefaults(defConfig);
+        }
     }
 
     @Override
@@ -84,8 +100,12 @@ public final class SkyblockIslandLife extends JavaPlugin {
         return instance;
     }
 
-    public FileConfiguration getLanguageConfig() {
-        return languageConfig;
+    public YamlConfiguration getLang() {
+        return LANG;
+    }
+
+    public File getLangFile() {
+        return LANG_FILE;
     }
 
     public SuperiorsSkyBlockHook getSuperiorsSkyBlockHook() {

@@ -3,6 +3,7 @@ package fr.nono74210.skyblockislandlife.commands;
 import fr.nono74210.skyblockislandlife.SkyblockIslandLife;
 import fr.nono74210.skyblockislandlife.database.DatabaseManager;
 import fr.nono74210.skyblockislandlife.utils.ResultT;
+import fr.nono74210.skyblockislandlife.utils.language.MessageUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -19,7 +20,7 @@ public class CommandVie implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, String label, String[] args) {
         SkyblockIslandLife plugin = SkyblockIslandLife.getInstance();
-        FileConfiguration languageConfig = SkyblockIslandLife.getInstance().getLanguageConfig();
+        FileConfiguration languageConfig = SkyblockIslandLife.getInstance().getLang();
 
         if (!command.getName().equalsIgnoreCase("vie")) {
             return false;
@@ -29,38 +30,38 @@ public class CommandVie implements CommandExecutor {
             Player player = (Player) commandSender;
             String message = languageConfig.getString("MiscMessages.DisplayLivesLeft", "§aYou have  %islandlife_left% lives left");
             String parsedMessage = PlaceholderAPI.setPlaceholders(player, message);
-            player.sendMessage(parsedMessage);
+            player.sendMessage(MessageUtils.colorize(parsedMessage));
             return true;
         }
 
         if (args[0].equalsIgnoreCase("reload")) {
             if (!commandSender.hasPermission("vie.reload")){
-                commandSender.sendMessage(languageConfig.getString("ErrorMessages.NoPermission", "§cYou don't have permissions to do that !"));
+                commandSender.sendMessage(MessageUtils.colorize(languageConfig.getString("ErrorMessages.NoPermission", "§cYou don't have permissions to do that !")));
                 return false;
             }
             plugin.reloadConfig();
-            commandSender.sendMessage(languageConfig.getString("MiscMessages.ReloadComplete", "§aReload complete"));
+            commandSender.sendMessage(MessageUtils.colorize(languageConfig.getString("MiscMessages.ReloadComplete", "§aReload complete")));
             return true;
         }
 
         if (args[0].equalsIgnoreCase("add")) {
             if (!commandSender.hasPermission("vie.add")) {
-                commandSender.sendMessage(languageConfig.getString("ErrorMessages.NoPermission", "§cYou don't have permissions to do that !"));
+                commandSender.sendMessage(MessageUtils.colorize(languageConfig.getString("ErrorMessages.NoPermission", "§cYou don't have permissions to do that !")));
                 return false;
             }
             if (args.length > 3) {
-                commandSender.sendMessage(languageConfig.getString("ErrorMessages.TooManyArgsError", "§cToo many args"));
+                commandSender.sendMessage(MessageUtils.colorize(languageConfig.getString("ErrorMessages.TooManyArgsError", "§cToo many args")));
                 return false;
             }
 
             if (args.length < 3) {
-                commandSender.sendMessage(languageConfig.getString("ErrorMessages.NotEnoughArgsError", "§cNot enough args ! Usage is /vie add <player> <amount>"));
+                commandSender.sendMessage(MessageUtils.colorize(languageConfig.getString("ErrorMessages.NotEnoughArgsError", "§cNot enough args ! Usage is /vie add <player> <amount>")));
                 return false;
             }
 
             Player target = Bukkit.getPlayerExact(args[1]);
             if (target == null) {
-                commandSender.sendMessage(languageConfig.getString("ErrorMessages.PlayerNotFoundError", "§cPlayer not found"));
+                commandSender.sendMessage(MessageUtils.colorize(languageConfig.getString("ErrorMessages.PlayerNotFoundError", "§cPlayer not found")));
                 return false;
             }
 
@@ -72,7 +73,7 @@ public class CommandVie implements CommandExecutor {
                     return true;
                 }
             } catch (NumberFormatException e) {
-                commandSender.sendMessage(languageConfig.getString("ErrorMessages.NotAnIntError", "§cYou must specify an integer"));
+                commandSender.sendMessage(MessageUtils.colorize(languageConfig.getString("ErrorMessages.NotAnIntError", "§cYou must specify an integer")));
                 return false;
             }
 
