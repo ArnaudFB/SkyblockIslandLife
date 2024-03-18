@@ -8,11 +8,9 @@ import java.util.UUID;
 public class SuperiorsSkyBlockHook {
 
     public ResultT<UUID> getIslandByPlayerUUID(UUID uniqueId) {
-        UUID islandUUID = SuperiorSkyblockAPI.getPlayer(uniqueId).getIsland().getUniqueId();
-        if (islandUUID == null) {
-            return ResultT.error("No island was found linked to player with uuid : " + uniqueId);
+        if (SuperiorSkyblockAPI.getPlayer(uniqueId).hasIsland()) {
+            return ResultT.success(SuperiorSkyblockAPI.getPlayer(uniqueId).getIsland().getUniqueId());
         }
-
-        return ResultT.success(islandUUID);
+        return ResultT.error("No island was found linked to player with uuid : " + uniqueId);
     }
 }

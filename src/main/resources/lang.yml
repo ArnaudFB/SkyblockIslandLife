@@ -1,11 +1,22 @@
-PluginName: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→'
+PluginName: '&9&l[&3&lSky&b&lIslandLife&9&l]'
 MiscMessages:
   DisplayLivesLeft: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ Vous avez %islandlife_left%
     vie(s) restante(s)'
+  LivesAddedSuccessfully: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ Vous venez d''ajouter des vies au joueur : %player%'
+  LivesRemovedSuccessfully: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ Vous venez de retirer des vies au joueur : %player%'
+  LivesSetSuccessfully: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ Vous venez de redéfinir le nombre de vie(s) au joueur : %player%'
   ReloadComplete: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ Reload fini'
 
+HelpMessages:
+  VieCommand: '/vie : permet de voir son nombre de vie(s) restante(s)'
+  ReloadCommand: '/vie reload : permet de reload la config du plugin'
+  AddCommand: '/vie add <joueur> <nombre> : permet d''ajouter des vies à un joueur'
+  RemoveCommand: '/vie remove <joueur> <nombre> : permet de retirer des vies à un joueur'
+  SetCommand: '/vie set <joueur> <nombre> : permet de définir un nombre de vies à un joueur'
+
+
 ErrorMessages:
-  NoPermission: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cVous n''avez pas la permission
+  NoPermissionError: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cVous n''avez pas la permission
     d''effectuer cette commande'
   TooManyArgsError: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cTrop d''arguments pour
     la commande !'
@@ -14,3 +25,4 @@ ErrorMessages:
   PlayerNotFoundError: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cLe joueur spécifié n''a
     pas été trouvé'
   NotAnIntError: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cVeuillez entrer un entier'
+  PlayerHaveNoIslandError: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cVous n''avez pas d''île pour le moment, créez en une avec /is create'

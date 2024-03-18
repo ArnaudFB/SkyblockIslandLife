@@ -27,7 +27,7 @@ public class Database {
     }
 
     public Connection getConnection() throws SQLException {
-        if (connection != null && !connection.isClosed()) {
+        if (connection != null && connection.isValid(0)) {
             return connection;
         }
 

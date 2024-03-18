@@ -54,15 +54,21 @@ public class PlaceholderHook extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, String params) {
-        SkyblockIslandLife skyblockXtreme = SkyblockIslandLife.getInstance();
+        SkyblockIslandLife skyblockIslandLife = SkyblockIslandLife.getInstance();
 
         if (params.equalsIgnoreCase("left")) {
-            ResultT<UUID> islanduuid = skyblockXtreme.getSuperiorsSkyBlockHook().getIslandByPlayerUUID(player.getUniqueId());
+            ResultT<UUID> islanduuid = skyblockIslandLife.getSuperiorsSkyBlockHook().getIslandByPlayerUUID(player.getUniqueId());
+            if (islanduuid.inError()) {
+                return "";
+            }
+            if (islanduuid.getResult().toString().equalsIgnoreCase("null")) {
+                return "";
+            }
             return String.valueOf(DatabaseManager.getLivesByIslandUuid(islanduuid.getResult()).getResult());
         }
 
         if (params.equalsIgnoreCase("max")) {
-            return String.valueOf(skyblockXtreme.getConfig().getInt("Lives.MaxLives"));
+            return String.valueOf(skyblockIslandLife.getConfig().getInt("Lives.MaxLives"));
         }
 
         return "";

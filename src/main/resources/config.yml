@@ -1,12 +1,9 @@
 # Commands to be performed on player's death
 CommandsOnDeath:
-  Command1: ""
-  Command2: ""
+  Command1: "msg %player% Vous avez %islandlife_left% vie(s) restante(s) !"
 
 #Commands to be performed when the player has no more lives left
 CommandsNoMoreLives:
-  Command1: ""
-  Command2: ""
 
 # Base amount for starting lives and maximum lives
 Lives:

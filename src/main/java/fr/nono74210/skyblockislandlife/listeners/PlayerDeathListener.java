@@ -11,6 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.UUID;
 
 public class PlayerDeathListener implements Listener {
@@ -21,30 +23,39 @@ public class PlayerDeathListener implements Listener {
         Player player = event.getEntity();
         UUID playerUuid = player.getUniqueId();
 
-        ConfigurationSection configDeathCommands = plugin.getConfig().getConfigurationSection("CommandsOnDeath");
-        if (configDeathCommands != null) {
-            for (String line : configDeathCommands.getKeys(false)) {
-                Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
+        ConfigurationSection configurationSectionDeath = plugin.getConfig().getConfigurationSection("CommandsOnDeath");
+        if (configurationSectionDeath != null) {
+            Map<String, Object> configDeathCommands = plugin.getConfig().getConfigurationSection("CommandsOnDeath").getValues(true);
+            for (Object line : configDeathCommands.values()) {
+                if (line instanceof String) {
+                    Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line.toString()).replaceAll("%player%", player.getName()));
                 }
+            }
         }
 
         ResultT<UUID> islanduuid = plugin.getSuperiorsSkyBlockHook().getIslandByPlayerUUID(playerUuid);
-        ResultT<Integer> resLivesleft = DatabaseManager.decrementLivesByIslandUuid(islanduuid.getResult());
+        int penalty = plugin.getConfig().getInt("Lives.Penalty");
+        ResultT<Integer> resLivesleft = DatabaseManager.decrementLivesByIslandUuid(islanduuid.getResult(), penalty);
         if (resLivesleft.inError()) {
             SkyblockIslandLife.log.sendMessage(resLivesleft.getErrorMessage());
+            return ;
         }
 
 
         if (resLivesleft.getResult() <= 0) {
 
-            ConfigurationSection configCommandsNoMoreLives = plugin.getConfig().getConfigurationSection("CommandsNoMoreLives");
-            if (configCommandsNoMoreLives != null) {
-                for (String line : configCommandsNoMoreLives.getKeys(false)) {
-                    Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
+            ConfigurationSection configurationSectionNoMoreLives = plugin.getConfig().getConfigurationSection("CommandsNoMoreLives");
+            if (configurationSectionNoMoreLives != null) {
+                Map<String, Object> configNoMoreLivesCommands = plugin.getConfig().getConfigurationSection("CommandsNoMoreLives").getValues(true);
+                for (Object line : configNoMoreLivesCommands.values()) {
+                    if (line instanceof String) {
+                        Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line.toString()).replaceAll("%player%", player.getName()));
                     }
+                }
             }
-            DatabaseManager.setLivesByIslandUuid(islanduuid.getResult());
 
+            int startingAmount = plugin.getConfig().getInt("Lives.StartingAmount", 10);
+            DatabaseManager.setLivesByIslandUuid(islanduuid.getResult(), startingAmount);
         }
 
     }

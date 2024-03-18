@@ -1,6 +1,7 @@
 package fr.nono74210.skyblockislandlife.database;
 
 import fr.nono74210.skyblockislandlife.SkyblockIslandLife;
+import fr.nono74210.skyblockislandlife.hooks.SuperiorsSkyBlockHook;
 import fr.nono74210.skyblockislandlife.utils.ResultT;
 
 import java.sql.SQLException;
@@ -15,6 +16,8 @@ public class DatabaseManager {
     private static boolean isError;
 
     public static void init() {
+        isError = false;
+
         SkyblockIslandLife plugin = SkyblockIslandLife.getInstance();
 
         String host = plugin.getConfig().getString("database.url");
@@ -35,7 +38,7 @@ public class DatabaseManager {
 
     public static void load() {
         if (isError) {
-            SkyblockIslandLife.log.sendMessage("§cInteractions with storage disable to prevent issue, an error occurred before this, please goes up in the logs.");
+            SkyblockIslandLife.log.sendMessage("§cInteractions with storage disable to prevent issue, an error occurred before this, please go up in the logs.");
             return;
         }
 
@@ -57,12 +60,13 @@ public class DatabaseManager {
             db.addIslandToDatabase(islandId, SkyblockIslandLife.getInstance().getConfig().getInt("Lives.StartingAmount"));
         } catch (SQLException ex) {
             SkyblockIslandLife.log.sendMessage("§cError when trying to add island " + islandId + " to database: " + ex.getMessage());
+            isError = true;
         }
     }
 
     public static void deleteIsland(UUID islandId) {
         if (isError) {
-            SkyblockIslandLife.log.sendMessage("§cInteractions with storage disable to prevent issue, an error occurred before this, please goes up in the logs.");
+            SkyblockIslandLife.log.sendMessage("§cInteractions with storage disable to prevent issue, an error occurred before this, please go up in the logs.");
             return;
         }
 
@@ -70,13 +74,14 @@ public class DatabaseManager {
             db.deleteIslandFromDatabase(islandId);
         } catch (SQLException ex) {
             SkyblockIslandLife.log.sendMessage("§cError when trying to delete island " + islandId + " to database: " + ex.getMessage());
+            isError = true;
         }
 
     }
 
     public static ResultT<Integer> addLivesByIslandUuid(UUID islandUuid, Integer amount) {
         if (isError) {
-            return ResultT.error("§cInteractions with storage disable to prevent issue, an error occurred before this, please goes up in the logs.");
+            return ResultT.error("§cInteractions with storage disable to prevent issue, an error occurred before this, please go up in the logs.");
         }
 
         if (amount < 0) {
@@ -93,59 +98,74 @@ public class DatabaseManager {
             db.setNewLivesAmountByIslandUuid(islandUuid, newAmount);
             return ResultT.success(newAmount);
         } catch (SQLException ex) {
-            SkyblockIslandLife.log.sendMessage("§cSomething went wrong when trying to set a new amount on island " + islandUuid + ex.getMessage());
-            return ResultT.error("");
+            SkyblockIslandLife.log.sendMessage("§cSomething went wrong when trying to add lives on island " + islandUuid + ex.getMessage());
+            isError = true;
+            return ResultT.error("§cUnable to communicate with database, please contact an administrator");
         }
     }
 
-    public static ResultT<Integer> decrementLivesByIslandUuid(UUID islandUuid) {
+    public static ResultT<Integer> decrementLivesByIslandUuid(UUID islandUuid, Integer penalty) {
         if (isError) {
-            return ResultT.error("§cInteractions with storage disable to prevent issue, an error occurred before this, please goes up in the logs.");
+            return ResultT.error("§cInteractions with storage disable to prevent issue, an error occurred before this, please go up in the logs.");
         }
+
+        if (penalty < 0) {
+            return ResultT.error("The specified penalty must be positive !");
+        }
+
         try {
             int islandLives = db.getLivesLeftByUUID(islandUuid);
             if (islandLives == -1) {
                 return ResultT.error("No island match found with uuid = " + islandUuid);
             }
-            int penalty = SkyblockIslandLife.getInstance().getConfig().getInt("Lives.Penalty", 1);
             int newAmount = islandLives - penalty;
             db.setNewLivesAmountByIslandUuid(islandUuid, newAmount);
             return ResultT.success(newAmount);
         } catch (SQLException ex) {
-            SkyblockIslandLife.log.sendMessage("§cSomething went wrong when trying to set a new amount on island " + islandUuid + ex.getMessage());
-            return ResultT.error("");
+            SkyblockIslandLife.log.sendMessage("§cSomething went wrong when trying to remove lives on island " + islandUuid + ex.getMessage());
+            isError = true;
+            return ResultT.error("§cUnable to communicate with database, please contact an administrator");
         }
     }
 
-    public static ResultT<Integer> setLivesByIslandUuid(UUID islandUuid) {
+    public static ResultT<Integer> setLivesByIslandUuid(UUID islandUuid, Integer amount) {
         if (isError) {
-            return ResultT.error("§cInteractions with storage disable to prevent issue, an error occurred before this, please goes up in the logs.");
+            return ResultT.error("§cInteractions with storage disable to prevent issue, an error occurred before this, please go up in the logs.");
+        }
+
+        if (amount < 0) {
+            return ResultT.error("The specified amount must be positive !");
         }
 
         try {
-            int baseAmount = SkyblockIslandLife.getInstance().getConfig().getInt("Lives.StartingAmount", 10);
-            db.setNewLivesAmountByIslandUuid(islandUuid, baseAmount);
-            return ResultT.success(baseAmount);
+            db.setNewLivesAmountByIslandUuid(islandUuid, amount);
+            return ResultT.success(amount);
         } catch (SQLException ex) {
             SkyblockIslandLife.log.sendMessage("§cSomething went wrong when trying to set a new amount on island " + islandUuid + ex.getMessage());
-            return ResultT.error("");
+            isError = true;
+            return ResultT.error("§cUnable to communicate with database, please contact an administrator");
         }
     }
 
 
     public static ResultT<Integer> getLivesByIslandUuid(UUID islandUuid) {
         if (isError) {
-            SkyblockIslandLife.log.sendMessage("§cInteractions with storage disable to prevent issue, an error occurred before this, please goes up in the logs.");
-            return ResultT.error("");
+            SkyblockIslandLife.log.sendMessage("§cInteractions with storage disable to prevent issue, an error occurred before this, please go up in the logs.");
+            return ResultT.error("§cUnable to communicate with database, please contact an administrator");
         }
 
         try{
             int livesLeft = db.getLivesLeftByUUID(islandUuid);
             return ResultT.success(livesLeft);
         } catch (SQLException ex) {
-            return ResultT.error("");
+            isError = true;
+            return ResultT.error("§cUnable to communicate with database, please contact an administrator");
         }
 
+    }
+
+    public static boolean isDatabaseInError() {
+        return isError;
     }
 
     public static void close() {

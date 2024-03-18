@@ -7,14 +7,17 @@ depend:
   - "SuperiorSkyblock2"
 commands:
   vie:
-    description: Commande de base du plugin
+    description: Base command for the plugin
     permission: vie.seen
 permissions:
   vie.seen:
-    description: Permet de voir son nombre de vies restantes
+    description: Allows one to see their amount of lives left
   vie.reload:
-    description: Permet de reload la config du plugin
+    description: Allows one to reload plugin's config
     default: op
   vie.add:
-    description: Permet d'ajouter des vies à une ile
+    description: Allows one to add lives to a specified player
+    default: op
+  vie.help:
+    description: Allows one to see available commands
     default: op
