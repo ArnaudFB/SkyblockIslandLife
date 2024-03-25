@@ -22,7 +22,8 @@ public enum Lang {
         PLAYER_NOT_FOUND_ERROR("ErrorMessages.PlayerNotFoundError","&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cLe joueur spécifié n'a pas été trouvé"),
         NOT_AN_INT_ERROR("ErrorMessages.NotAnIntError","&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cVeuillez entrer un entier"),
         INVALID_INT_ERROR("ErrorMessages.InvalidIntError", "&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cVeuillez entrer un entier positif"),
-        PLAYER_HAVE_NO_ISLAND("ErrorMessages.PlayerHaveNoIslandError", "&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cVous n''avez pas d''île pour le moment, créez en une avec /is create");
+        PLAYER_HAVE_NO_ISLAND("ErrorMessages.PlayerHaveNoIslandError", "&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cVous n''avez pas d''île pour le moment, créez en une avec /is create"),
+        DATABASE_IN_ERROR("ErrorMessages.DatabaseInError","&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cBase de données injoignable, veuillez contacter un administrateur !");
 
         private String path;
         private String def;

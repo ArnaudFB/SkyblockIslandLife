@@ -26,3 +26,4 @@ ErrorMessages:
     pas été trouvé'
   NotAnIntError: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cVeuillez entrer un entier'
   PlayerHaveNoIslandError: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cVous n''avez pas d''île pour le moment, créez en une avec /is create'
+  DatabaseInError: '&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cBase de données injoignable, veuillez contacter un administrateur !'
