@@ -8,13 +8,15 @@ public class Database {
     private Connection connection;
 
     String host;
+    String prefix;
     int port;
     String user;
     String password;
     String database;
 
-    public Database(String host, Integer port, String user, String password, String database) {
+    public Database(String host, String prefix, Integer port, String user, String password, String database) {
         this.host = host;
+        this.prefix = prefix;
         this.port = port;
         this.user = user;
         this.password = password;
@@ -35,7 +37,7 @@ public class Database {
     }
 
     public void load() throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS islandLives (" +
+        PreparedStatement ps = getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + prefix + "islandLives (" +
                 "id         INTEGER     PRIMARY KEY AUTO_INCREMENT, " +
                 "islandUuid     VARCHAR(36), " +
                 "livesleft  NUMERIC)");
@@ -48,7 +50,7 @@ public class Database {
     }
 
     public int getLivesLeftByUUID(UUID islandUuid) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement("SELECT livesleft FROM islandlives " +
+        PreparedStatement ps = getConnection().prepareStatement("SELECT livesleft FROM " + prefix + "islandlives " +
                 "WHERE islandUuid = ?");
         ps.setString(1, islandUuid.toString());
 
@@ -64,7 +66,7 @@ public class Database {
     }
 
     public int setNewLivesAmountByIslandUuid(UUID islandUuid, int newAmount) throws SQLException {
-        PreparedStatement preparedStatement = getConnection().prepareStatement("UPDATE islandlives " +
+        PreparedStatement preparedStatement = getConnection().prepareStatement("UPDATE " + prefix + "islandlives " +
                 "SET livesleft = ? " +
                 "WHERE islandUuid = ? ");
 
@@ -78,7 +80,7 @@ public class Database {
     }
 
     public void addIslandToDatabase(UUID islanduuid, int defaultAmount) throws SQLException {
-        PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO islandlives (islandUuid, livesleft) " +
+        PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO " + prefix + "islandlives (islandUuid, livesleft) " +
                 "VALUES (?, ?)");
 
         preparedStatement.setString(1, islanduuid.toString());
@@ -88,7 +90,7 @@ public class Database {
     }
 
     public void deleteIslandFromDatabase(UUID islanduuid) throws SQLException {
-        PreparedStatement preparedStatement = getConnection().prepareStatement("DELETE FROM islandlives " +
+        PreparedStatement preparedStatement = getConnection().prepareStatement("DELETE FROM " + prefix + "islandlives " +
                 "WHERE islandUuid = ?");
 
         preparedStatement.setString(1, islanduuid.toString());

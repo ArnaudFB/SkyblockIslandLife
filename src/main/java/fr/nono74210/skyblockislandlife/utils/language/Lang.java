@@ -15,7 +15,7 @@ public enum Lang {
         RELOAD_COMMAND("HelpMessages.ReloadCommand", "/vie reload : permet de reload la config du plugin"),
         ADD_COMMAND("HelpMessages.AddCommand", "/vie add <joueur> <nombre> : permet d''ajouter des vies à un joueur"),
         REMOVE_COMMAND("HelpMessages.RemoveCommand", "/vie remove <joueur> <nombre> : permet de retirer des vies à un joueur"),
-        SET_COMMAND("HelpMassages.SetCommand", "/vie set <joueur> <nombre> : permet de définir un nombre de vies à un joueur"),
+        SET_COMMAND("HelpMessages.SetCommand", "/vie set <joueur> <nombre> : permet de définir un nombre de vies à un joueur"),
         NO_PERMISSION_ERROR("ErrorMessages.NoPermissionError", "&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cVous n'avez pas la permission d'effectuer cette commande"),
         TOO_MANY_ARGS_ERROR("ErrorMessages.TooManyArgsError", "&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cTrop d'arguments pour la commande !"),
         NOT_ENOUGH_ARGS_ERROR("ErrorMessages.NotEnoughArgsError", "&9&l[&3&lSky&b&lIslandLife&9&l] &7→ &cPas assez d'arguments pour la commande !"),

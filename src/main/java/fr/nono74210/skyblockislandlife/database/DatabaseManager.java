@@ -21,12 +21,13 @@ public class DatabaseManager {
         SkyblockIslandLife plugin = SkyblockIslandLife.getInstance();
 
         String host = plugin.getConfig().getString("database.url");
+        String prefix = plugin.getConfig().getString("database.prefix");
         String user = plugin.getConfig().getString("database.user");
         String password = plugin.getConfig().getString("database.password");
         String database = plugin.getConfig().getString("database.database");
         int port = plugin.getConfig().getInt("database.port", 3306);
 
-        db = new Database(host, port, user, password, database);
+        db = new Database(host, prefix, port, user, password, database);
 
         try {
             db.init();

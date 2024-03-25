@@ -35,7 +35,7 @@ public class CommandVie implements CommandExecutor {
         // Disable plugin's command if database in error
         if (isDatabaseInError) {
             String defaultMsg = "§cUnable to communicate with database, please contact an administrator";
-            commandSender.sendMessage(colorize(languageConfig.getString("ErrorMessage.DatabaseInError", defaultMsg)));
+            commandSender.sendMessage(colorize(languageConfig.getString("ErrorMessages.DatabaseInError", defaultMsg)));
             return false;
         }
 
